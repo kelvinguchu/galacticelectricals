@@ -215,7 +215,7 @@ export interface Product {
    */
   generateSlug?: boolean | null;
   slug: string;
-  productType: 'simple' | 'variable' | 'external';
+  productType: 'simple' | 'variable';
   description?: {
     root: {
       type: string;
@@ -276,14 +276,6 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
-  /**
-   * URL for external/affiliate product
-   */
-  externalUrl?: string | null;
-  /**
-   * Custom buy button label
-   */
-  buttonText?: string | null;
   featured?: boolean | null;
   categories?: (string | ProductCategory)[] | null;
   tags?: (string | ProductTag)[] | null;
@@ -660,8 +652,6 @@ export interface ProductsSelect<T extends boolean = true> {
         isVariation?: T;
         id?: T;
       };
-  externalUrl?: T;
-  buttonText?: T;
   featured?: T;
   categories?: T;
   tags?: T;

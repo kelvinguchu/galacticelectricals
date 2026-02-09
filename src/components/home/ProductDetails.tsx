@@ -8,7 +8,6 @@ import {
   HiHeart,
   HiOutlineXMark,
   HiOutlineTag,
-  HiOutlineArrowTopRightOnSquare,
 } from 'react-icons/hi2'
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
@@ -226,19 +225,6 @@ function DetailInfo({
           ))}
         </div>
       ) : null}
-
-      {/* External / Affiliate link */}
-      {detail.productType === 'external' && detail.externalUrl ? (
-        <a
-          href={detail.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-1 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
-        >
-          <HiOutlineArrowTopRightOnSquare className="size-3.5" />
-          {detail.buttonText || 'Buy from partner'}
-        </a>
-      ) : null}
     </>
   )
 }
@@ -256,7 +242,6 @@ function DetailActions({
   const [adding, setAdding] = useState(false)
 
   const isOut = product.stockStatus === 'outofstock'
-  const isExternal = detail?.productType === 'external'
   const wishlisted = isInWishlist(product.id)
   const inCart = isInCart(product.id)
 
@@ -282,33 +267,21 @@ function DetailActions({
 
   return (
     <div className="flex gap-2 border-t border-gray-200 bg-white p-4">
-      {isExternal && detail?.externalUrl ? (
-        <a
-          href={detail.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex h-10 flex-1 items-center justify-center gap-2 bg-primary text-sm font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
-        >
-          <HiOutlineArrowTopRightOnSquare className="size-4" />
-          {detail.buttonText || 'Buy Now'}
-        </a>
-      ) : (
-        <button
-          className={`flex h-10 flex-1 cursor-pointer items-center justify-center gap-2 text-sm font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${
-            inCart && !adding ? 'bg-green-600' : 'bg-primary'
-          }`}
-          disabled={isOut || adding}
-          onClick={handleAdd}
-          type="button"
-        >
-          {inCart ? (
-            <HiShoppingBag className="size-4" />
-          ) : (
-            <HiOutlineShoppingBag className="size-4" />
-          )}
-          {cartText}
-        </button>
-      )}
+      <button
+        className={`flex h-10 flex-1 cursor-pointer items-center justify-center gap-2 text-sm font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${
+          inCart && !adding ? 'bg-green-600' : 'bg-primary'
+        }`}
+        disabled={isOut || adding}
+        onClick={handleAdd}
+        type="button"
+      >
+        {inCart ? (
+          <HiShoppingBag className="size-4" />
+        ) : (
+          <HiOutlineShoppingBag className="size-4" />
+        )}
+        {cartText}
+      </button>
       <button
         aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         className={`flex h-10 w-11 cursor-pointer items-center justify-center border-2 transition-colors ${

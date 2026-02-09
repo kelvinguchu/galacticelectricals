@@ -344,7 +344,7 @@ export type ProductDetail = {
   shortDescriptionHtml: string | null
   descriptionHtml: string | null
   sku: string | null
-  productType: 'simple' | 'variable' | 'external'
+  productType: 'simple' | 'variable'
   stockStatus: 'instock' | 'outofstock' | 'onbackorder'
   manageStock: boolean
   stockQuantity: number | null
@@ -352,8 +352,6 @@ export type ProductDetail = {
   galleryUrls: string[]
   categoryNames: string[]
   tagNames: string[]
-  externalUrl: string | null
-  buttonText: string | null
 }
 
 const lexicalToHtml = (data: unknown): string | null => {
@@ -418,7 +416,7 @@ export const getProductDetails = unstable_cache(
         shortDescriptionHtml: lexicalToHtml(product.shortDescription),
         descriptionHtml: lexicalToHtml(product.description),
         sku: product.sku ?? null,
-        productType: product.productType ?? 'simple',
+        productType: (product.productType ?? 'simple') as ProductDetail['productType'],
         stockStatus: product.stockStatus ?? 'instock',
         manageStock: product.manageStock ?? false,
         stockQuantity: product.stockQuantity ?? null,
@@ -426,8 +424,6 @@ export const getProductDetails = unstable_cache(
         galleryUrls: extractGalleryUrls(product.gallery),
         categoryNames: extractCategoryNames(product.categories),
         tagNames: extractTagNames(product.tags),
-        externalUrl: product.externalUrl ?? null,
-        buttonText: product.buttonText ?? null,
       }
     } catch {
       return null
@@ -658,7 +654,7 @@ export const getProductBySlug = unstable_cache(
         shortDescriptionHtml: lexicalToHtml(product.shortDescription),
         descriptionHtml: lexicalToHtml(product.description),
         sku: product.sku ?? null,
-        productType: product.productType ?? 'simple',
+        productType: (product.productType ?? 'simple') as ProductDetail['productType'],
         stockStatus: product.stockStatus ?? 'instock',
         manageStock: product.manageStock ?? false,
         stockQuantity: product.stockQuantity ?? null,
@@ -666,8 +662,6 @@ export const getProductBySlug = unstable_cache(
         galleryUrls: extractGalleryUrls(product.gallery),
         categoryNames: extractCategoryNames(product.categories),
         tagNames: extractTagNames(product.tags),
-        externalUrl: product.externalUrl ?? null,
-        buttonText: product.buttonText ?? null,
       }
 
       return {

@@ -482,6 +482,52 @@ async function processSuccessfulFallback(
   }
 }
 
+function extractOrderId(order: unknown): string | null {
+  if (!order) return null
+  if (typeof order === 'object') {
+    return String((order as { id?: string }).id || '')
+  }
+  return typeof order === 'string' || typeof order === 'number' ? String(order) : null
+}
+
+async function resolveSuccessPayment(
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  payment: { order?: unknown; amount?: number | null; checkoutData?: unknown },
+): Promise<CheckoutStatusResult> {
+  const orderId = extractOrderId(payment.order)
+
+  if (orderId) {
+    const order = await payload.findByID({ collection: 'orders', id: orderId, depth: 0 })
+    return {
+      status: 'paid',
+      orderNumber: order.orderNumber || undefined,
+      total: typeof order.pricing?.total === 'number' ? order.pricing.total : (payment.amount ?? 0),
+    }
+  }
+
+  const cd = payment.checkoutData as StoredCheckoutData | null
+  return {
+    status: 'paid',
+    total: cd?.pricing?.total ?? payment.amount ?? 0,
+  }
+}
+
+async function trySTKFallback(
+  payload: Awaited<ReturnType<typeof getPayload>>,
+  payment: PaymentForFallback,
+  checkoutRequestID: string,
+): Promise<CheckoutStatusResult | null> {
+  const pendingSinceMs = Date.now() - new Date(payment.createdAt).getTime()
+  if (pendingSinceMs <= STK_QUERY_AFTER_MS) return null
+
+  try {
+    return await handleSTKQueryFallback(payload, payment, checkoutRequestID)
+  } catch (error_) {
+    console.error('[CheckoutStatus] STK query fallback error:', error_)
+    return null
+  }
+}
+
 export async function getCheckoutStatus(checkoutRequestID: string): Promise<CheckoutStatusResult> {
   try {
     const payload = await getPayload({ config })
@@ -502,28 +548,7 @@ export async function getCheckoutStatus(checkoutRequestID: string): Promise<Chec
     console.log('[CheckoutStatus] Payment', payment.id, 'status:', payment.status)
 
     if (payment.status === 'success') {
-      let orderId: string | null = null
-      if (payment.order) {
-        orderId =
-          typeof payment.order === 'object'
-            ? String((payment.order as { id?: string }).id || '')
-            : String(payment.order)
-      }
-
-      let orderNumber: string | undefined
-      let total: number | undefined
-
-      if (orderId) {
-        const order = await payload.findByID({ collection: 'orders', id: orderId, depth: 0 })
-        orderNumber = order.orderNumber || undefined
-        total =
-          typeof order.pricing?.total === 'number' ? order.pricing.total : (payment.amount ?? 0)
-      } else {
-        const cd = payment.checkoutData as StoredCheckoutData | null
-        total = cd?.pricing?.total ?? payment.amount ?? 0
-      }
-
-      return { status: 'paid', orderNumber, total }
+      return resolveSuccessPayment(payload, payment)
     }
 
     if (payment.status === 'failed' || payment.status === 'rejected') {
@@ -533,18 +558,8 @@ export async function getCheckoutStatus(checkoutRequestID: string): Promise<Chec
       }
     }
 
-    // Fallback: query M-Pesa directly when callback hasn't arrived
-    const pendingSinceMs = Date.now() - new Date(payment.createdAt).getTime()
-    if (pendingSinceMs > STK_QUERY_AFTER_MS) {
-      try {
-        const fallbackResult = await handleSTKQueryFallback(payload, payment, checkoutRequestID)
-        if (fallbackResult) return fallbackResult
-      } catch (error_) {
-        console.error('[CheckoutStatus] STK query fallback error:', error_)
-      }
-    }
-
-    return { status: 'pending' }
+    const fallbackResult = await trySTKFallback(payload, payment, checkoutRequestID)
+    return fallbackResult ?? { status: 'pending' }
   } catch (error_) {
     console.error('[CheckoutStatus] Error:', error_)
     return { status: 'pending' }

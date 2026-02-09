@@ -44,7 +44,6 @@ const stockOptions = [
 const typeOptions = [
   { label: 'Simple', value: 'simple' },
   { label: 'Variable', value: 'variable' },
-  { label: 'External / Affiliate', value: 'external' },
 ]
 
 const sortOptions = [

@@ -57,7 +57,6 @@ export const Products: CollectionConfig = {
               options: [
                 { label: 'Simple', value: 'simple' },
                 { label: 'Variable', value: 'variable' },
-                { label: 'External / Affiliate', value: 'external' },
               ],
               index: true,
             },
@@ -180,27 +179,6 @@ export const Products: CollectionConfig = {
                   },
                 },
               ],
-            },
-          ],
-        },
-        {
-          label: 'External',
-          fields: [
-            {
-              name: 'externalUrl',
-              type: 'text',
-              admin: {
-                condition: (data) => data.productType === 'external',
-                description: 'URL for external/affiliate product',
-              },
-            },
-            {
-              name: 'buttonText',
-              type: 'text',
-              admin: {
-                condition: (data) => data.productType === 'external',
-                description: 'Custom buy button label',
-              },
             },
           ],
         },

@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { HiOutlineArrowLeft, HiOutlineTag, HiOutlineArrowTopRightOnSquare } from 'react-icons/hi2'
+import { HiOutlineArrowLeft, HiOutlineTag } from 'react-icons/hi2'
 
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
@@ -39,7 +39,6 @@ const stockStatusMeta: Record<string, { label: string; className: string }> = {
 const productTypeMeta: Record<string, { label: string; className: string }> = {
   simple: { label: 'Simple', className: 'bg-blue-100 text-blue-700' },
   variable: { label: 'Variable', className: 'bg-purple-100 text-purple-700' },
-  external: { label: 'External / Affiliate', className: 'bg-orange-100 text-orange-700' },
 }
 
 function ProductImages({
@@ -136,18 +135,6 @@ function ProductMeta({ product }: { readonly product: FullProduct }) {
 function ProductSpecs({ product }: { readonly product: FullProduct }) {
   return (
     <>
-      {product.productType === 'external' && product.externalUrl ? (
-        <a
-          href={product.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-        >
-          <HiOutlineArrowTopRightOnSquare className="size-4" />
-          {product.buttonText || 'Buy from partner'}
-        </a>
-      ) : null}
-
       {product.attributes.length > 0 ? (
         <div className="flex flex-col gap-2 border-t border-gray-200 pt-4">
           <p className="text-xs font-semibold uppercase tracking-widest text-black/50">

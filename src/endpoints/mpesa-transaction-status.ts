@@ -52,8 +52,12 @@ export const mpesaTransactionStatusQueryEndpoint: Endpoint = {
       })
 
       const responsePayload = query.responsePayload as Record<string, unknown>
-      const conversationID = String(responsePayload.ConversationID || '')
-      const originatorConversationID = String(responsePayload.OriginatorConversationID || '')
+      const conversationID =
+        typeof responsePayload.ConversationID === 'string' ? responsePayload.ConversationID : ''
+      const originatorConversationID =
+        typeof responsePayload.OriginatorConversationID === 'string'
+          ? responsePayload.OriginatorConversationID
+          : ''
 
       const paymentLookup = await req.payload.find({
         collection: 'payments',
@@ -74,7 +78,10 @@ export const mpesaTransactionStatusQueryEndpoint: Endpoint = {
               conversationID,
               originatorConversationID,
               resultCode: toNumber(responsePayload.ResponseCode, 0),
-              resultDesc: String(responsePayload.ResponseDescription || ''),
+              resultDesc:
+                typeof responsePayload.ResponseDescription === 'string'
+                  ? responsePayload.ResponseDescription
+                  : '',
               rawPayload: query.responsePayload,
               checkedAt: new Date().toISOString(),
             },

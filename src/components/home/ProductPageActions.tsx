@@ -1,13 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import {
-  HiOutlineHeart,
-  HiHeart,
-  HiOutlineShoppingBag,
-  HiShoppingBag,
-  HiOutlineArrowTopRightOnSquare,
-} from 'react-icons/hi2'
+import { HiOutlineHeart, HiHeart, HiOutlineShoppingBag, HiShoppingBag } from 'react-icons/hi2'
 
 import { useStore } from '@/stores/store'
 import type { FullProduct } from '@/lib/get-storefront-home-data'
@@ -25,7 +19,6 @@ export function ProductPageActions({ product }: Props) {
   useEffect(() => setMounted(true), [])
 
   const isOut = product.stockStatus === 'outofstock'
-  const isExternal = product.productType === 'external'
   const activePrice = product.salePrice ?? product.regularPrice
   const isZeroPrice = activePrice <= 0
   const wishlisted = mounted && isInWishlist(product.id)
@@ -56,33 +49,21 @@ export function ProductPageActions({ product }: Props) {
 
   return (
     <div className="flex gap-2 md:gap-3">
-      {isExternal && product.externalUrl ? (
-        <a
-          href={product.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex h-11 flex-1 items-center justify-center gap-2 bg-primary text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 md:h-12 md:text-sm"
-        >
-          <HiOutlineArrowTopRightOnSquare className="size-4 md:size-5" />
-          {product.buttonText || 'Buy Now'}
-        </a>
-      ) : (
-        <button
-          className={`flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 md:h-12 md:text-sm ${
-            inCart && !adding ? 'bg-green-600' : 'bg-primary'
-          }`}
-          disabled={isOut || isZeroPrice || adding}
-          onClick={handleAdd}
-          type="button"
-        >
-          {inCart ? (
-            <HiShoppingBag className="size-4 md:size-5" />
-          ) : (
-            <HiOutlineShoppingBag className="size-4 md:size-5" />
-          )}
-          {cartText}
-        </button>
-      )}
+      <button
+        className={`flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 md:h-12 md:text-sm ${
+          inCart && !adding ? 'bg-green-600' : 'bg-primary'
+        }`}
+        disabled={isOut || isZeroPrice || adding}
+        onClick={handleAdd}
+        type="button"
+      >
+        {inCart ? (
+          <HiShoppingBag className="size-4 md:size-5" />
+        ) : (
+          <HiOutlineShoppingBag className="size-4 md:size-5" />
+        )}
+        {cartText}
+      </button>
       <button
         aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
         className={`flex h-11 w-12 cursor-pointer items-center justify-center border-2 transition-colors md:h-12 md:w-14 ${
