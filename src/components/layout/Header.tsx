@@ -36,7 +36,7 @@ export function Header({
           />
         </Link>
 
-        <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
+        <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex whitespace-nowrap">
           {shopProducts.length > 0 ? (
             <ShopMegaMenu label="Shop" products={shopProducts} />
           ) : (
@@ -87,9 +87,21 @@ export function Header({
               New In
             </Link>
           )}
+          <Link
+            className="cursor-pointer border-2 border-transparent px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.08em] text-black transition-colors hover:border-gray-300 hover:bg-accent"
+            href="/about"
+          >
+            About
+          </Link>
+          <Link
+            className="cursor-pointer border-2 border-transparent px-3 py-1.5 text-sm font-semibold uppercase tracking-[0.08em] text-black transition-colors hover:border-gray-300 hover:bg-accent"
+            href="/contact"
+          >
+            Contact
+          </Link>
         </nav>
 
-        <Form action="/products" className="relative mx-2 hidden max-w-xs flex-1 lg:block">
+        <Form action="/products" className="relative mx-2 hidden max-w-56 flex-1 lg:block">
           <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-black/50" />
           <input
             className="h-10 w-full cursor-text border-2 border-gray-300 bg-white pl-9 pr-3 text-sm text-black placeholder:text-black/45 focus:outline-none"

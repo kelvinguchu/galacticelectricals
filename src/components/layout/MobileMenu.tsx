@@ -12,6 +12,8 @@ import {
   HiOutlineTag,
   HiOutlineArrowRight,
   HiOutlineUserCircle,
+  HiOutlineInformationCircle,
+  HiOutlinePhone,
 } from 'react-icons/hi2'
 
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
@@ -21,6 +23,8 @@ const navItems = [
   { label: 'Categories', href: '/categories', icon: HiOutlineSquares2X2 },
   { label: 'Deals', href: '/categories/deal-of-the-day', icon: HiOutlineTag },
   { label: 'New In', href: '/products', icon: HiOutlineSparkles },
+  { label: 'About Us', href: '/about', icon: HiOutlineInformationCircle },
+  { label: 'Contact', href: '/contact', icon: HiOutlinePhone },
 ]
 
 export function MobileMenu() {

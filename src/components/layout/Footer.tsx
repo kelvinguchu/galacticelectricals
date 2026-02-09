@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { HiOutlineBolt, HiOutlineEnvelope, HiOutlineMapPin, HiOutlinePhone } from 'react-icons/hi2'
-import { FaFacebookF, FaTiktok } from 'react-icons/fa6'
+import { FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa6'
 
 import {
   Accordion,
@@ -22,7 +22,7 @@ const shopLinks = [
 ]
 
 const companyLinks = [
-  { label: 'About Us', href: '#' },
+  { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '#' },
   { label: 'Warranty Policy', href: '#' },
   { label: 'Privacy Policy', href: '#' },
@@ -42,6 +42,11 @@ const socials = [
     icon: FaFacebookF,
     label: 'Facebook',
     href: 'https://www.facebook.com/p/Galactic-Solar-and-Electricals-61559262567196/',
+  },
+  {
+    icon: FaInstagram,
+    label: 'Instagram',
+    href: 'https://www.instagram.com/galactic_solar_electricals',
   },
   { icon: FaTiktok, label: 'TikTok', href: 'https://www.tiktok.com/@galactic.solar' },
 ]
