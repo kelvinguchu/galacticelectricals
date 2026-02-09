@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useStore } from '@/stores/store'
 import { ProductDetails } from '@/components/home/ProductDetails'
 import type { StorefrontProductCard } from '@/lib/get-storefront-home-data'
+import { toast } from 'sonner'
 
 type ProductActionBarProps = {
   readonly product: StorefrontProductCard
@@ -29,6 +30,8 @@ export function ProductActionBar({ product }: ProductActionBarProps) {
   useEffect(() => setMounted(true), [])
 
   const isOut = product.stockStatus === 'outofstock'
+  const activePrice = product.salePrice ?? product.regularPrice
+  const isZeroPrice = activePrice <= 0
   const wishlisted = mounted && isInWishlist(product.id)
   const inCart = mounted && isInCart(product.id)
 
@@ -40,7 +43,16 @@ export function ProductActionBar({ product }: ProductActionBarProps) {
     salePrice: product.salePrice,
   }
 
+  const cartTooltip = isZeroPrice ? 'Contact for Price' : 'Add to Cart'
+  const cartTooltipLabel = isOut ? 'Out of Stock' : cartTooltip
+
   const handleAddToCart = () => {
+    if (isZeroPrice) {
+      toast.warning('Price unavailable', {
+        description: 'Please contact us for the actual price before ordering.',
+      })
+      return
+    }
     setAdding(true)
     addToCart(productInfo)
     setTimeout(() => setAdding(false), 200)
@@ -106,7 +118,7 @@ export function ProductActionBar({ product }: ProductActionBarProps) {
                     ? 'bg-green-600 text-white hover:bg-green-700'
                     : 'bg-primary text-white hover:bg-primary/80'
                 }`}
-                disabled={isOut || adding}
+                disabled={isOut || isZeroPrice || adding}
                 onClick={handleAddToCart}
                 type="button"
               >
@@ -117,7 +129,7 @@ export function ProductActionBar({ product }: ProductActionBarProps) {
                 )}
               </button>
             </TooltipTrigger>
-            <TooltipContent>{isOut ? 'Out of Stock' : 'Add to Cart'}</TooltipContent>
+            <TooltipContent>{cartTooltipLabel}</TooltipContent>
           </Tooltip>
         </div>
       </TooltipProvider>

@@ -81,9 +81,10 @@ const container: React.CSSProperties = {
 }
 
 const headerSection: React.CSSProperties = {
-  backgroundColor: '#048afb',
+  backgroundColor: '#ffffff',
   padding: '20px 16px',
   textAlign: 'center' as const,
+  borderBottom: '3px solid #048afb',
 }
 
 const logo: React.CSSProperties = {

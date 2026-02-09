@@ -11,6 +11,7 @@ import {
 
 import { useStore } from '@/stores/store'
 import type { FullProduct } from '@/lib/get-storefront-home-data'
+import { toast } from 'sonner'
 
 type Props = {
   readonly product: FullProduct
@@ -25,6 +26,8 @@ export function ProductPageActions({ product }: Props) {
 
   const isOut = product.stockStatus === 'outofstock'
   const isExternal = product.productType === 'external'
+  const activePrice = product.salePrice ?? product.regularPrice
+  const isZeroPrice = activePrice <= 0
   const wishlisted = mounted && isInWishlist(product.id)
   const inCart = mounted && isInCart(product.id)
 
@@ -37,6 +40,12 @@ export function ProductPageActions({ product }: Props) {
   }
 
   const handleAdd = () => {
+    if (isZeroPrice) {
+      toast.warning('Price unavailable', {
+        description: 'Please contact us for the actual price before ordering.',
+      })
+      return
+    }
     setAdding(true)
     addToCart(productInfo)
     setTimeout(() => setAdding(false), 300)
@@ -62,7 +71,7 @@ export function ProductPageActions({ product }: Props) {
           className={`flex h-11 flex-1 cursor-pointer items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 md:h-12 md:text-sm ${
             inCart && !adding ? 'bg-green-600' : 'bg-primary'
           }`}
-          disabled={isOut || adding}
+          disabled={isOut || isZeroPrice || adding}
           onClick={handleAdd}
           type="button"
         >

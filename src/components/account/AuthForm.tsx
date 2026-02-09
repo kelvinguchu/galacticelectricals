@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   HiOutlineEnvelope,
   HiOutlineLockClosed,
@@ -104,6 +104,11 @@ export function AuthForm() {
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [verifyEmail, setVerifyEmail] = useState<string | null>(null)
+
+  // Scroll to top when switching between login/register or verify screen
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [tab, verifyEmail])
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

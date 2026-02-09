@@ -3,6 +3,7 @@ import './styles.css'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
+import { ScrollToTop } from '@/components/providers/ScrollToTop'
 import { StoreHydration } from '@/components/providers/StoreHydration'
 import { Toaster } from '@/components/ui/sonner'
 import {
@@ -33,6 +34,7 @@ export default async function RootLayout(props: Readonly<{ children: React.React
     <html lang="en">
       <body>
         <StoreHydration />
+        <ScrollToTop />
         <div className="min-h-screen bg-background text-foreground">
           <Header
             categories={categories}

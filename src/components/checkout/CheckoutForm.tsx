@@ -32,6 +32,11 @@ export function CheckoutForm() {
   // Step management
   const [step, setStep] = useState<Step>('shipping')
   const [submitting, setSubmitting] = useState(false)
+
+  // Scroll to top whenever the checkout step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [step])
   const [error, setError] = useState<string | null>(null)
 
   // Email + OTP (guest only)

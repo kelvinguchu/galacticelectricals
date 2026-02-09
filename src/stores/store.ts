@@ -201,6 +201,10 @@ export const useStore = create<Store>()(
     },
 
     addToCart: (product, quantity = 1) => {
+      // Guard: reject items with no valid price
+      const effectivePrice = product.salePrice ?? product.price
+      if (!effectivePrice || effectivePrice <= 0) return
+
       set((state) => {
         const existing = state.cart.find((i) => i.productId === product.id)
         if (existing) {

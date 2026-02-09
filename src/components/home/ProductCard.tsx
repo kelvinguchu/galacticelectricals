@@ -9,6 +9,8 @@ import { ProductActionBar } from '@/components/home/ProductActionBar'
 import { formatKES } from '@/lib/utils'
 import type { StorefrontProductCard } from '@/lib/get-storefront-home-data'
 
+const ZERO_PRICE_LABEL = 'Contact for Price'
+
 const stockLabel: Record<StorefrontProductCard['stockStatus'], string> = {
   instock: 'In Stock',
   onbackorder: 'Backorder',
@@ -23,6 +25,7 @@ type ProductCardProps = {
 export function ProductCard({ product, showDealBadge = false }: ProductCardProps) {
   const activePrice = product.salePrice ?? product.regularPrice
   const hasSale = product.salePrice !== null && product.salePrice < product.regularPrice
+  const isZeroPrice = activePrice <= 0
 
   return (
     <Card className="h-full gap-0 rounded-none border-2 border-gray-300 py-0 shadow-none transition-transform duration-200 hover:-translate-y-0.5">
@@ -63,13 +66,21 @@ export function ProductCard({ product, showDealBadge = false }: ProductCardProps
           {product.title}
         </Link>
 
-        <div className="flex items-end gap-1.5">
-          <p className="text-base font-semibold">{formatKES(activePrice)}</p>
-          {hasSale ? (
-            <p className="text-xs font-medium text-black/50 line-through">
-              {formatKES(product.regularPrice)}
-            </p>
-          ) : null}
+        <div className="flex items-baseline gap-1">
+          {isZeroPrice ? (
+            <p className="text-sm font-semibold text-amber-600">{ZERO_PRICE_LABEL}</p>
+          ) : (
+            <>
+              <p className="whitespace-nowrap text-sm font-semibold sm:text-base">
+                {formatKES(activePrice)}
+              </p>
+              {hasSale ? (
+                <p className="whitespace-nowrap text-[10px] font-medium text-black/50 line-through sm:text-xs">
+                  {formatKES(product.regularPrice)}
+                </p>
+              ) : null}
+            </>
+          )}
         </div>
 
         <p className="text-[10px] font-medium uppercase tracking-widest text-black/70">
