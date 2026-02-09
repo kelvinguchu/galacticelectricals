@@ -14,11 +14,11 @@ export function HeroProductCard({ product }: Props) {
   const activePrice = product.salePrice ?? product.regularPrice
 
   return (
-    <div className="group flex flex-col border-r-2 border-gray-300 bg-white last:border-r-0">
-      <div className="flex flex-1 flex-col p-2 md:p-3">
+    <div className="group flex h-full flex-col border-2 border-gray-300 bg-white md:border-r-2 md:border-l-0 md:border-t-0 md:border-b-0 md:last:border-r-0">
+      <div className="flex flex-1 flex-col p-3 md:p-3">
         <Link
           href={`/products/${product.slug}`}
-          className="mb-1.5 flex h-16 items-center justify-center md:mb-2 md:h-20"
+          className="mb-2 flex h-20 items-center justify-center md:mb-2 md:h-20"
         >
           {product.imageUrl ? (
             <img
@@ -35,11 +35,11 @@ export function HeroProductCard({ product }: Props) {
         >
           {product.title}
         </Link>
-        <span className="mt-auto pt-1 text-sm font-semibold text-primary">
+        <span className="mt-auto pt-1.5 text-sm font-semibold text-primary">
           {formatKES(activePrice)}
         </span>
       </div>
-      <div className="border-t border-gray-200">
+      <div className="border-t-2 border-gray-300 md:border-t">
         <ProductActionBar product={product} />
       </div>
     </div>

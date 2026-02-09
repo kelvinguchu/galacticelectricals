@@ -26,11 +26,11 @@ export function Hero({ products }: Props) {
   const bottomProducts = products.slice(1, 10)
 
   return (
-    <section className="flex flex-col border-b-2 border-gray-300 bg-white md:h-[calc(100dvh-63px)]">
+    <section className="flex flex-col border-b-2 border-gray-300 bg-background md:h-[calc(100dvh-63px)] md:bg-white">
       {/* Top section: text + main product */}
       <div className="grid min-h-0 flex-1 md:grid-cols-9">
         {/* Text panel */}
-        <div className="flex min-h-0 flex-col gap-3 px-4 py-5 md:col-span-5 md:gap-4 md:border-r-2 md:border-gray-300 md:px-6 md:py-7 lg:px-8">
+        <div className="flex min-h-0 flex-col gap-3 px-4 py-6 md:col-span-5 md:gap-4 md:border-r-2 md:border-gray-300 md:px-6 md:py-7 lg:px-8">
           <div>
             <h1 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
               <span>Solar &</span> <span className="text-primary">Electronics</span>{' '}
@@ -63,19 +63,19 @@ export function Hero({ products }: Props) {
           </div>
         </div>
 
-        {/* Main product */}
-        <div className="flex min-h-0 flex-col bg-accent md:col-span-4">
+        {/* Main product — padded card on mobile */}
+        <div className="flex min-h-0 flex-col px-4 pb-4 md:col-span-4 md:bg-accent md:p-0">
           {mainProduct ? <HeroMainProduct product={mainProduct} /> : null}
         </div>
       </div>
 
       {/* Bottom product strip */}
       {bottomProducts.length > 0 ? (
-        <div className="border-t-2 border-gray-300">
-          {/* Mobile: horizontal scroll */}
-          <div className="flex overflow-x-auto md:hidden">
+        <div className="md:border-t-2 md:border-gray-300">
+          {/* Mobile: horizontal scroll with padding */}
+          <div className="flex gap-3 overflow-x-auto px-4 pb-4 md:hidden">
             {bottomProducts.map((product) => (
-              <div key={product.id} className="min-w-[44vw] max-w-[44vw] shrink-0">
+              <div key={product.id} className="w-[42vw] shrink-0">
                 <HeroProductCard product={product} />
               </div>
             ))}

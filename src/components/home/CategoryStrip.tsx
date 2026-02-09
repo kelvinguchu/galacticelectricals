@@ -17,7 +17,7 @@ export function CategoryStrip({ categories }: Readonly<Props>) {
     <section className="border-b-2 border-gray-300 bg-white py-6 md:py-7" id="categories">
       <div className="mx-auto max-w-7xl px-3 md:px-6">
         <div className="mb-4 flex items-center justify-between gap-3">
-          <SectionHeading>Shop by Category</SectionHeading>
+          <SectionHeading>Categories</SectionHeading>
           <Button
             asChild
             className="shrink-0 rounded-none border-gray-300 px-4 text-xs font-semibold uppercase"
