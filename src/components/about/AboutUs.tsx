@@ -149,7 +149,7 @@ export function AboutUs() {
       {/* Core Products & Services */}
       <section className="border-b-2 border-gray-300 bg-background py-6 md:py-8">
         <div className="mx-auto max-w-7xl px-3 md:px-6">
-          <SectionHeading className="mb-4">Core Products &amp; Services</SectionHeading>
+          <SectionHeading className="mb-4">Products &amp; Services</SectionHeading>
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 md:gap-3 lg:grid-cols-4">
             {coreProducts.map((item) => (
               <article key={item.title} className="border-2 border-gray-300 bg-white p-3 md:p-4">
