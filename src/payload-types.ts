@@ -72,6 +72,9 @@ export interface Config {
     products: Product;
     'product-categories': ProductCategory;
     'product-tags': ProductTag;
+    orders: Order;
+    payments: Payment;
+    'mpesa-webhook-events': MpesaWebhookEvent;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +87,9 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'product-categories': ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
     'product-tags': ProductTagsSelect<false> | ProductTagsSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    'mpesa-webhook-events': MpesaWebhookEventsSelect<false> | MpesaWebhookEventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -127,6 +133,35 @@ export interface UserAuthOperations {
 export interface User {
   id: string;
   roles: ('admin' | 'editor' | 'user')[];
+  firstName: string;
+  lastName: string;
+  phone: string;
+  shippingAddress?: {
+    addressLine1?: string | null;
+    addressLine2?: string | null;
+    city?: string | null;
+    county?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+  };
+  cart?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  wishlist?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -134,6 +169,8 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -289,6 +326,153 @@ export interface ProductTag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  orderNumber?: string | null;
+  customer?: (string | null) | User;
+  customerEmail: string;
+  customerPhone: string;
+  currency: string;
+  paymentMethod: 'mpesa';
+  paymentStatus: 'pending' | 'processing' | 'paid' | 'failed' | 'cancelled' | 'refunded';
+  fulfillmentStatus: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  items: {
+    product: string | Product;
+    title: string;
+    sku?: string | null;
+    quantity: number;
+    unitPrice: number;
+    lineTotal: number;
+    id?: string | null;
+  }[];
+  pricing: {
+    subtotal: number;
+    shipping: number;
+    tax: number;
+    discount: number;
+    total: number;
+    currency: string;
+  };
+  shippingAddress: {
+    firstName: string;
+    lastName: string;
+    phone?: string | null;
+    email?: string | null;
+    addressLine1: string;
+    addressLine2?: string | null;
+    city: string;
+    county?: string | null;
+    postalCode?: string | null;
+    country: string;
+  };
+  mpesa?: {
+    merchantRequestID?: string | null;
+    checkoutRequestID?: string | null;
+    resultCode?: number | null;
+    resultDesc?: string | null;
+    receiptNumber?: string | null;
+    transactionDate?: string | null;
+  };
+  notes?: string | null;
+  placedAt?: string | null;
+  paidAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: string;
+  order?: (string | null) | Order;
+  /**
+   * Stores checkout context until order is created after payment confirmation
+   */
+  checkoutData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  provider: 'mpesa';
+  channel: 'stk_push' | 'c2b';
+  status: 'initiated' | 'pending' | 'success' | 'failed' | 'rejected';
+  amount: number;
+  currency: string;
+  phone?: string | null;
+  reference?: string | null;
+  checkoutRequestID?: string | null;
+  merchantRequestID?: string | null;
+  mpesaReceiptNumber?: string | null;
+  resultCode?: number | null;
+  resultDesc?: string | null;
+  requestPayload?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  callbackPayload?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  transactionStatus?: {
+    conversationID?: string | null;
+    originatorConversationID?: string | null;
+    resultCode?: number | null;
+    resultDesc?: string | null;
+    rawPayload?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    checkedAt?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mpesa-webhook-events".
+ */
+export interface MpesaWebhookEvent {
+  id: string;
+  channel: 'stk_callback' | 'c2b_validate' | 'c2b_confirm' | 'transaction_status_result' | 'transaction_status_timeout';
+  eventHash: string;
+  processed?: boolean | null;
+  payload:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -330,6 +514,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'product-tags';
         value: string | ProductTag;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: string | Order;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: string | Payment;
+      } | null)
+    | ({
+        relationTo: 'mpesa-webhook-events';
+        value: string | MpesaWebhookEvent;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -379,6 +575,21 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   roles?: T;
+  firstName?: T;
+  lastName?: T;
+  phone?: T;
+  shippingAddress?:
+    | T
+    | {
+        addressLine1?: T;
+        addressLine2?: T;
+        city?: T;
+        county?: T;
+        postalCode?: T;
+        country?: T;
+      };
+  cart?: T;
+  wishlist?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -386,6 +597,8 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  _verified?: T;
+  _verificationToken?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -478,6 +691,117 @@ export interface ProductTagsSelect<T extends boolean = true> {
   name?: T;
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customer?: T;
+  customerEmail?: T;
+  customerPhone?: T;
+  currency?: T;
+  paymentMethod?: T;
+  paymentStatus?: T;
+  fulfillmentStatus?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        title?: T;
+        sku?: T;
+        quantity?: T;
+        unitPrice?: T;
+        lineTotal?: T;
+        id?: T;
+      };
+  pricing?:
+    | T
+    | {
+        subtotal?: T;
+        shipping?: T;
+        tax?: T;
+        discount?: T;
+        total?: T;
+        currency?: T;
+      };
+  shippingAddress?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        phone?: T;
+        email?: T;
+        addressLine1?: T;
+        addressLine2?: T;
+        city?: T;
+        county?: T;
+        postalCode?: T;
+        country?: T;
+      };
+  mpesa?:
+    | T
+    | {
+        merchantRequestID?: T;
+        checkoutRequestID?: T;
+        resultCode?: T;
+        resultDesc?: T;
+        receiptNumber?: T;
+        transactionDate?: T;
+      };
+  notes?: T;
+  placedAt?: T;
+  paidAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  order?: T;
+  checkoutData?: T;
+  provider?: T;
+  channel?: T;
+  status?: T;
+  amount?: T;
+  currency?: T;
+  phone?: T;
+  reference?: T;
+  checkoutRequestID?: T;
+  merchantRequestID?: T;
+  mpesaReceiptNumber?: T;
+  resultCode?: T;
+  resultDesc?: T;
+  requestPayload?: T;
+  callbackPayload?: T;
+  transactionStatus?:
+    | T
+    | {
+        conversationID?: T;
+        originatorConversationID?: T;
+        resultCode?: T;
+        resultDesc?: T;
+        rawPayload?: T;
+        checkedAt?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mpesa-webhook-events_select".
+ */
+export interface MpesaWebhookEventsSelect<T extends boolean = true> {
+  channel?: T;
+  eventHash?: T;
+  processed?: T;
+  payload?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -1,6 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
+import { revalidateStorefrontCache } from '@/hooks/revalidate-storefront'
+import { CACHE_TAG_PRODUCTS } from '@/lib/cache-tags'
+
+const { afterChange, afterDelete } = revalidateStorefrontCache([CACHE_TAG_PRODUCTS])
+
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
@@ -26,6 +31,10 @@ export const Products: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {

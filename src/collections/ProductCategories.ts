@@ -1,6 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
+import { revalidateStorefrontCache } from '@/hooks/revalidate-storefront'
+import { CACHE_TAG_CATEGORIES } from '@/lib/cache-tags'
+
+const { afterChange, afterDelete } = revalidateStorefrontCache([CACHE_TAG_CATEGORIES])
+
 export const ProductCategories: CollectionConfig = {
   slug: 'product-categories',
   admin: {
@@ -13,6 +18,10 @@ export const ProductCategories: CollectionConfig = {
     create: ({ req: { user } }) => user?.roles?.includes('admin') || false,
     update: ({ req: { user } }) => user?.roles?.includes('admin') || false,
     delete: ({ req: { user } }) => user?.roles?.includes('admin') || false,
+  },
+  hooks: {
+    afterChange: [afterChange],
+    afterDelete: [afterDelete],
   },
   fields: [
     {
