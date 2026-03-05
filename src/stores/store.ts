@@ -33,6 +33,7 @@ type AuthUser = {
 export type CartItem = {
   productId: string
   title: string
+  slug?: string
   imageUrl: string | null
   price: number
   salePrice: number | null
@@ -42,6 +43,7 @@ export type CartItem = {
 export type WishlistItem = {
   productId: string
   title: string
+  slug?: string
   imageUrl: string | null
   price: number
   salePrice: number | null
@@ -50,6 +52,7 @@ export type WishlistItem = {
 export type ProductInfo = {
   id: string
   title: string
+  slug?: string
   imageUrl: string | null
   price: number
   salePrice: number | null
@@ -220,6 +223,7 @@ export const useStore = create<Store>()(
             {
               productId: product.id,
               title: product.title,
+              slug: product.slug,
               imageUrl: product.imageUrl,
               price: product.price,
               salePrice: product.salePrice,
@@ -261,6 +265,7 @@ export const useStore = create<Store>()(
             {
               productId: product.id,
               title: product.title,
+              slug: product.slug,
               imageUrl: product.imageUrl,
               price: product.price,
               salePrice: product.salePrice,

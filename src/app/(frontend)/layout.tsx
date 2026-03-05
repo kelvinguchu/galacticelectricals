@@ -14,7 +14,7 @@ import {
 } from '@/lib/get-storefront-home-data'
 
 export const metadata = {
-  description: 'Shop solar and electrical products with fast M-Pesa checkout in Kenya.',
+  description: 'Shop solar and electrical products and place your order quickly on WhatsApp.',
   title: 'Galactic Solar & Electricals',
   icons: {
     icon: './favicon.png',

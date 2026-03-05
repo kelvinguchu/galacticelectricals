@@ -7,6 +7,7 @@ import config from '@payload-config'
 export type CartItem = {
   productId: string
   title: string
+  slug?: string
   imageUrl: string | null
   price: number
   salePrice: number | null
@@ -16,6 +17,7 @@ export type CartItem = {
 export type WishlistItem = {
   productId: string
   title: string
+  slug?: string
   imageUrl: string | null
   price: number
   salePrice: number | null

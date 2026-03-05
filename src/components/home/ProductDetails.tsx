@@ -248,6 +248,7 @@ function DetailActions({
   const productInfo = {
     id: product.id,
     title: product.title,
+    slug: product.slug,
     imageUrl: product.imageUrl,
     price: product.regularPrice,
     salePrice: product.salePrice,

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { HiOutlineShoppingBag, HiOutlineTrash, HiHeart } from 'react-icons/hi2'
+import { FaWhatsapp } from 'react-icons/fa6'
 
 import {
   Sheet,
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { useStore } from '@/stores/store'
 import { formatKES } from '@/lib/utils'
+import { buildCartWhatsAppMessage, buildWhatsAppHref } from '@/lib/whatsapp'
 
 export function CartSheet() {
   const { cart, clearCart, removeFromCart, updateCartQuantity, isInWishlist } = useStore()
@@ -22,6 +24,8 @@ export function CartSheet() {
     const price = item.salePrice ?? item.price
     return sum + price * item.quantity
   }, 0)
+  const whatsappMessage = buildCartWhatsAppMessage(cart, cartTotal)
+  const whatsappHref = buildWhatsAppHref(whatsappMessage)
 
   return (
     <Sheet>
@@ -140,12 +144,15 @@ export function CartSheet() {
               <span className="text-base font-bold">{formatKES(cartTotal)}</span>
             </div>
             <SheetClose asChild>
-              <Link
-                className="flex h-11 w-full cursor-pointer items-center justify-center bg-primary text-sm font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
-                href="/checkout"
+              <a
+                className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 bg-[#25D366] text-sm font-semibold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
+                href={whatsappHref}
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                Proceed to Checkout
-              </Link>
+                <FaWhatsapp className="size-4" />
+                Order on WhatsApp
+              </a>
             </SheetClose>
             <button
               className="mt-2 w-full cursor-pointer py-2 text-center text-xs font-medium text-rose-500 hover:text-rose-700"

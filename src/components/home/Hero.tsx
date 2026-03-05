@@ -14,7 +14,7 @@ import type { StorefrontProductCard } from '@/lib/get-storefront-home-data'
 const points = [
   { icon: HiOutlineShieldCheck, label: 'Warranty-backed products', short: 'Warranty' },
   { icon: HiOutlineTruck, label: 'Fast countrywide delivery', short: 'Fast Delivery' },
-  { icon: HiOutlineWallet, label: 'M-Pesa checkout ready', short: 'M-Pesa' },
+  { icon: HiOutlineWallet, label: 'Easy WhatsApp ordering', short: 'WhatsApp' },
 ]
 
 type Props = {
@@ -38,7 +38,7 @@ export function Hero({ products }: Props) {
             </h1>
             <p className="mt-3 max-w-lg border-l-4 border-gray-300 bg-accent px-3 py-1.5 text-sm text-black/80 md:mt-4 md:text-base">
               Shop solar systems, inverters, batteries, electrical equipment, and accessories with
-              smooth M-Pesa checkout.
+              quick order support via WhatsApp.
             </p>
           </div>
 

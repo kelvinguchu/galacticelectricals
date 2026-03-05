@@ -127,6 +127,62 @@ export function AboutUs() {
         </div>
       </section>
 
+      {/* Storefront Spotlight */}
+      <section className="border-b-2 border-gray-300 bg-accent py-6 md:py-8">
+        <div className="mx-auto max-w-7xl px-3 md:px-6">
+          <div className="grid gap-4 lg:grid-cols-[1.25fr,1fr] lg:items-center">
+            <article className="group relative overflow-hidden border-2 border-gray-300 bg-black">
+              <span className="absolute left-3 top-3 z-10 bg-secondary px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-black md:left-4 md:top-4">
+                Our Nairobi Storefront
+              </span>
+              <Image
+                alt="Galactic Solar and Electricals storefront at Tearoom, Duruma Road, Nairobi."
+                className="h-auto max-h-[95vh] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                height={1200}
+                src="/shop_photo.jpeg"
+                width={1200}
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 md:p-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-white">
+                  Tearoom, Duruma Road, Nairobi CBD
+                </p>
+              </div>
+            </article>
+
+            <div className="border-2 border-gray-300 bg-white p-4 md:p-5">
+              <SectionHeading className="mb-3">Built From a Real Shop Floor</SectionHeading>
+              <p className="text-sm leading-relaxed text-black/70 md:text-base">
+                This is where we built our reputation: a compact, busy storefront serving
+                technicians, businesses, and households every day. It keeps us grounded in what
+                customers actually need - reliable stock, clear pricing, and practical support.
+              </p>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="border border-gray-300 bg-accent p-2.5">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">
+                    Experience
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-black">10+ Years</p>
+                </div>
+                <div className="border border-gray-300 bg-accent p-2.5">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-black/50">
+                    Location
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-black">Nairobi CBD</p>
+                </div>
+              </div>
+
+              <Button asChild className="mt-4 rounded-none border border-gray-300 px-5" size="sm">
+                <Link href="/contact">
+                  Visit or Contact Us
+                  <HiOutlineArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission */}
       <section className="border-b-2 border-gray-300 bg-gray-950 py-6 md:py-8">
         <div className="mx-auto max-w-7xl px-3 md:px-6">

@@ -18,8 +18,8 @@ const items = [
   },
   {
     icon: HiOutlineCreditCard,
-    title: 'M-Pesa Payments',
-    text: 'Smooth checkout with secure transaction flow.',
+    title: 'WhatsApp Orders',
+    text: 'Share your cart and confirm your order directly with our team.',
   },
   {
     icon: HiOutlineBolt,

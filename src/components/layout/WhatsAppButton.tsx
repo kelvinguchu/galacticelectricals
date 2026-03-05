@@ -1,9 +1,12 @@
 'use client'
 
 import { FaWhatsapp } from 'react-icons/fa6'
+import {
+  buildWhatsAppHref,
+  DEFAULT_WHATSAPP_MESSAGE,
+} from '@/lib/whatsapp'
 
-const WHATSAPP_NUMBER = '254743312254'
-const DEFAULT_MESSAGE = 'Hi Galactic, I am interested in your products'
+const DEFAULT_MESSAGE = DEFAULT_WHATSAPP_MESSAGE
 
 type WhatsAppButtonProps = {
   readonly position?: 'left' | 'right'
@@ -14,7 +17,7 @@ export function WhatsAppButton({
   position = 'right',
   message = DEFAULT_MESSAGE,
 }: WhatsAppButtonProps) {
-  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  const href = buildWhatsAppHref(message)
 
   return (
     <a

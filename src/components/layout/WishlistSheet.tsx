@@ -106,6 +106,7 @@ export function WishlistSheet() {
                           addToCart({
                             id: item.productId,
                             title: item.title,
+                            slug: item.slug,
                             imageUrl: item.imageUrl,
                             price: item.price,
                             salePrice: item.salePrice,
@@ -123,6 +124,7 @@ export function WishlistSheet() {
                         toggleWishlist({
                           id: item.productId,
                           title: item.title,
+                          slug: item.slug,
                           imageUrl: item.imageUrl,
                           price: item.price,
                           salePrice: item.salePrice,
