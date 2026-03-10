@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { HiOutlineArrowLeft, HiOutlineTag } from 'react-icons/hi2'
 
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -13,20 +14,50 @@ import { formatKES } from '@/lib/utils'
 import { ProductPageActions } from '@/components/home/ProductPageActions'
 import { ProductCard } from '@/components/home/ProductCard'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
+import { ProductSchema } from '@/components/seo/ProductSchema'
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema'
+import { siteConfig } from '@/lib/site-config'
 
 type Props = {
   readonly params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const product = await getProductBySlug(slug)
-  if (!product) return { title: 'Product Not Found' }
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const description = product.shortDescriptionHtml
+    ? product.shortDescriptionHtml.replaceAll(/<[^>]*>/g, '').slice(0, 160)
+    : `Buy ${product.title} at ${siteConfig.name}. Fast delivery in Kenya.`
+
+  const ogImageUrl = product.imageUrl || siteConfig.ogImage
+
   return {
-    title: `${product.title} – Galactic Solar & Electricals`,
-    description: product.shortDescriptionHtml
-      ? product.shortDescriptionHtml.replaceAll(/<[^>]*>/g, '').slice(0, 160)
-      : `Buy ${product.title} at Galactic Solar & Electricals.`,
+    title: product.title,
+    description,
+    alternates: { canonical: `/products/${slug}` },
+    openGraph: {
+      title: `${product.title} – ${siteConfig.name}`,
+      description,
+      url: `/products/${slug}`,
+      type: 'website',
+      images: ogImageUrl
+        ? [{ url: ogImageUrl, width: 1200, height: 630, alt: product.imageAlt || product.title }]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
   }
 }
 
@@ -214,6 +245,14 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <section className="py-4 md:py-10" data-has-whatsapp>
+      <ProductSchema product={product} />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', href: '/' },
+          { name: 'Products', href: '/products' },
+          { name: product.title, href: `/products/${slug}` },
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-3 md:px-6">
         <div className="mb-4 flex flex-wrap items-center gap-2 md:mb-6 md:gap-3">
           <Button

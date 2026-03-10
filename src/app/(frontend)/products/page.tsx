@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { HiOutlineHome } from 'react-icons/hi2'
+import type { Metadata } from 'next'
 
 import { ProductCard } from '@/components/home/ProductCard'
 import { ProductFilters } from '@/components/home/ProductFilters'
@@ -8,9 +9,16 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
 import { searchProducts, getAllCategories } from '@/lib/get-storefront-home-data'
 
-export const metadata = {
-  title: 'All Products – Galactic Solar & Electricals',
-  description: 'Browse our full catalog of solar panels, inverters, batteries & electrical gear.',
+export const metadata: Metadata = {
+  title: 'All Products',
+  description:
+    'Browse our full catalog of solar panels, inverters, batteries & electrical gear. Free delivery in Nairobi.',
+  alternates: { canonical: '/products' },
+  openGraph: {
+    title: 'All Products – Galactic Solar & Electricals',
+    description: 'Browse our full catalog of solar panels, inverters, batteries & electrical gear.',
+    url: '/products',
+  },
 }
 
 type Props = {

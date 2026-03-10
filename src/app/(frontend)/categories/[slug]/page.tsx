@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import { HiOutlineArrowLeft } from 'react-icons/hi2'
 
 import { ProductCard } from '@/components/home/ProductCard'
@@ -8,6 +9,9 @@ import { ProductFilters } from '@/components/home/ProductFilters'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
 import { getCategoryBySlug, searchProducts } from '@/lib/get-storefront-home-data'
+import { BreadcrumbSchema } from '@/components/seo/BreadcrumbSchema'
+import { CollectionSchema } from '@/components/seo/CollectionSchema'
+import { siteConfig } from '@/lib/site-config'
 
 type Props = {
   readonly params: Promise<{ slug: string }>
@@ -23,13 +27,30 @@ type Props = {
   }>
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const category = await getCategoryBySlug(slug)
-  if (!category) return { title: 'Category Not Found' }
+
+  if (!category) {
+    return {
+      title: 'Category Not Found',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const description = `Shop ${category.name} products at ${siteConfig.name}. Quality electrical equipment with fast delivery in Kenya.`
+
   return {
-    title: `${category.name} – Galactic Solar & Electricals`,
-    description: `Shop ${category.name} products.`,
+    title: category.name,
+    description,
+    alternates: { canonical: `/categories/${slug}` },
+    openGraph: {
+      title: `${category.name} – ${siteConfig.name}`,
+      description,
+      url: `/categories/${slug}`,
+      type: 'website',
+      images: category.imageUrl ? [{ url: category.imageUrl, alt: category.name }] : undefined,
+    },
   }
 }
 
@@ -69,6 +90,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   return (
     <section className="py-4 md:py-6">
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', href: '/' },
+          { name: 'Categories', href: '/categories' },
+          { name: category.name, href: `/categories/${slug}` },
+        ]}
+      />
+      <CollectionSchema name={category.name} slug={slug} products={data.docs} />
       <Suspense>
         <ProductFilters categories={[]} fixedCategoryId={category.id}>
           <div className="px-3 md:px-6">

@@ -48,7 +48,7 @@ export type ReceiptData = {
 export const COMPANY_INFO = {
   name: 'Galactic Solar & Electricals',
   phone: '0743 312 254',
-  email: 'hello@galacticelectricals.com',
+  email: 'info@galacticelectricals.com',
   location: 'Nairobi, Kenya',
 } as const
 

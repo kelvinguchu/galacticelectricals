@@ -28,8 +28,8 @@ const contactDetails = [
   {
     icon: HiOutlineEnvelope,
     title: 'Email',
-    content: 'galacticsolarelectricals@gmail.com',
-    href: 'mailto:galacticsolarelectricals@gmail.com',
+    content: 'info@galacticelectricals.com',
+    href: 'mailto:info@galacticelectricals.com',
   },
   {
     icon: HiOutlineBolt,

@@ -3,8 +3,9 @@ import type { Metadata } from 'next'
 import { VerifyClient } from '@/components/account/VerifyClient'
 
 export const metadata: Metadata = {
-  title: 'Verify Email – Galactic Solar & Electricals',
+  title: 'Verify Email',
   description: 'Confirm your email address to activate your account.',
+  robots: { index: false, follow: false },
 }
 
 type Props = {

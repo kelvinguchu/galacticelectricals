@@ -1,15 +1,33 @@
 import React from 'react'
+import type { Metadata } from 'next'
 import { CategoryStrip } from '@/components/home/CategoryStrip'
 import { Hero } from '@/components/home/Hero'
 import { ProductShelf } from '@/components/home/ProductShelf'
 import { TrustBand } from '@/components/home/TrustBand'
+import { WebsiteSchema } from '@/components/seo/WebsiteSchema'
 import { getStorefrontHomeData } from '@/lib/get-storefront-home-data'
+import { siteConfig } from '@/lib/site-config'
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${siteConfig.name} – Solar Panels, Inverters & Batteries in Kenya`,
+  },
+  description: siteConfig.description,
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: `${siteConfig.name} – Solar & Electrical Products`,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    type: 'website',
+  },
+}
 
 export default async function HomePage() {
   const data = await getStorefrontHomeData()
 
   return (
     <>
+      <WebsiteSchema />
       <Hero
         products={data.featuredProducts.length > 0 ? data.featuredProducts : data.newArrivals}
       />

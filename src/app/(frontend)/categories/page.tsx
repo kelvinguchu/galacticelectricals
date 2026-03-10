@@ -1,14 +1,22 @@
 import { HiOutlineArrowLeft } from 'react-icons/hi2'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 
 import { CategoryCard } from '@/components/home/CategoryCard'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
 import { getAllCategories } from '@/lib/get-storefront-home-data'
 
-export const metadata = {
-  title: 'Categories – Galactic Solar & Electricals',
-  description: 'Browse all product categories for solar panels, inverters, batteries and more.',
+export const metadata: Metadata = {
+  title: 'Product Categories',
+  description:
+    'Browse all product categories — solar panels, inverters, batteries, wiring and more.',
+  alternates: { canonical: '/categories' },
+  openGraph: {
+    title: 'Product Categories – Galactic Solar & Electricals',
+    description: 'Browse all product categories for solar panels, inverters, batteries and more.',
+    url: '/categories',
+  },
 }
 
 export default async function CategoriesPage() {

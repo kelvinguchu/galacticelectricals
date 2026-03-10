@@ -92,10 +92,10 @@ export function Footer() {
               </a>
               <a
                 className="flex items-center gap-2.5 text-white/80 transition-colors hover:text-secondary"
-                href="mailto:hello@galacticelectricals.com"
+                href="mailto:info@galacticelectricals.com"
               >
                 <HiOutlineEnvelope className="size-4 shrink-0 text-secondary" />
-                hello@galacticelectricals.com
+                info@galacticelectricals.com
               </a>
               <p className="flex items-center gap-2.5 text-white/80">
                 <HiOutlineMapPin className="size-4 shrink-0 text-secondary" />
